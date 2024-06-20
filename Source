@@ -1,0 +1,195 @@
+-- Load the Orion Library
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+-- Function to create Get Stand buttons (example function)
+local function CreateGetStandButton(tab, standName)
+    tab:AddButton({
+        Name = "Get Stand " .. standName,
+        Callback = function()
+            -- Example logic for getting a stand
+            print("Acquiring stand: " .. standName)
+        end
+    })
+end
+
+-- Function to update LocalPlayer properties
+local function UpdateLocalPlayerProperties()
+    local player = game:GetService("Players").LocalPlayer
+    player.Character:WaitForChild("Humanoid")
+
+    local speedSlider = LocalPlayerTab:FindSlider("Speed")
+    local jumpPowerSlider = LocalPlayerTab:FindSlider("JumpPower")
+
+    speedSlider:SetCallback(function(value)
+        player.Character.Humanoid.WalkSpeed = value
+    end)
+
+    jumpPowerSlider:SetCallback(function(value)
+        player.Character.Humanoid.JumpPower = value
+    end)
+
+    -- Set initial values
+    speedSlider:SetValue(player.Character.Humanoid.WalkSpeed)
+    jumpPowerSlider:SetValue(player.Character.Humanoid.JumpPower)
+end
+
+-- Create the main window
+local Window = OrionLib:MakeWindow({
+    Name = "Stands Awakening | FunHub",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "StandsAwakeningFunHub",
+    IntroEnabled = true,
+    IntroText = "Welcome to FunHub!",
+    Icon = "rbxassetid://4483345998",
+    CloseCallback = function()
+        print("Window closed")
+    end
+})
+
+-- Create a tab named Fun Scripts
+local FunScriptsTab = Window:MakeTab({
+    Name = "Fun Scripts",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Add an example button to the Fun Scripts tab (GER Glitch)
+FunScriptsTab:AddButton({
+    Name = "GER (Golden Experience Requiem) glitch (must have GER)",
+    Callback = function()
+        local args = {
+            [1] = "Alternate",
+            [2] = "RTZ",
+            [3] = true
+        }
+        game:GetService("ReplicatedStorage").Main.Input:FireServer(unpack(args))
+        
+        -- Show notification for enabling the glitch
+        OrionLib:MakeNotification({
+            Name = "GER Glitch",
+            Content = "Golden Experience Requiem Glitch Enabled (Press F to disable)",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+    end    
+})
+
+-- Create a tab named AutoFarm without an icon (example tab)
+local AutoFarmTab = Window:MakeTab({
+    Name = "AutoFarm",
+    Icon = "",
+    PremiumOnly = false
+})
+
+-- Add "Get Stand" buttons to the AutoFarm tab (example buttons)
+local Stands = {
+    "Anubis", "D4C", "OMT", "CrazyDiamond", "DoppioKingCrimson", "KillerQueen",
+    "GoldExperience", "StarPlatinum", "StarPlatinumTW", "TheWorld", "HierophantGreen",
+    "Whitesnake", "TheWorldAlternateUniverse", "WhitesnakeAU", "KingCrimsonAU",
+    "SoftAndWetShiny", "StarPlatinumOVA", "TheWorldOVA", "NTWAU", "CreeperQueen",
+    "SPTW", "StickyFingers", "SoftAndWet"
+}
+
+for _, standName in ipairs(Stands) do
+    CreateGetStandButton(AutoFarmTab, standName)
+end
+
+-- Create a tab named Boss Fight in Orion without an icon
+local BossFightTab = Window:MakeTab({
+    Name = "Boss Fight",
+    PremiumOnly = false -- No Icon specified
+})
+
+-- Add the "Uncanny Boss Script" button to the Boss Fight tab (your second script)
+BossFightTab:AddButton({
+    Name = "Uncanny Boss Script",
+    Callback = function()
+        -- Load KavoUI library for the script
+        local kavoUi = loadstring(game:HttpGet("https://pastebin.com/raw/vff1bQ9F"))()
+        local window = kavoUi.CreateLib("Thank you for using my script", "DarkTheme")
+        
+        -- Create tabs and buttons for the second script
+        local Tab1 = window:NewTab("Stands Awakening")
+        local Tab1Section = Tab1:NewSection("Main")
+        
+        Tab1Section:NewButton("BeboScript", "Gives You an OP gui", function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Bebo-Mods/BeboScripts/main/StandAwekening.lua"))()
+        end)
+        
+        local Tab2 = window:NewTab("Uncanny Boss")
+        local Tab2Section = Tab2:NewSection("Event Boss")
+        
+        Tab2Section:NewButton("God Mode", "Gives God mode (W?)", function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Just3itx/Deezs/main/Games/Stands%20Awakening/Loader.lua"))()
+        end)
+        
+        Tab2Section:NewButton("No Cooldown", "Gives you no cooldown (Use with auto kill)", function()
+            loadstring(game:HttpGet(('https://raw.githubusercontent.com/itsyouranya/free/main/Anya%20Stands%20Awakening%20Helper.lua'), true))()
+        end)
+        
+        Tab2Section:NewButton("Auto Kill (Recommended)", "Auto kill boss", function()
+            getgenv().WaitTime = 420 -- amount time you want added to your run in seconds
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/sunexn/standsawakening/main/uncanny.lua", true))() -- open source
+        end)
+    end,
+    Description = "Executes the Uncanny Boss Script"
+})
+
+-- Create a tab named LocalPlayer in Orion without an icon
+local LocalPlayerTab = Window:MakeTab({
+    Name = "LocalPlayer",
+    PremiumOnly = false -- No Icon specified
+})
+
+-- Add sliders for Speed and JumpPower to the LocalPlayer tab
+LocalPlayerTab:AddSlider({
+    Name = "Speed",
+    Min = 0,
+    Max = 1000,
+    DefaultValue = 16, -- Default walk speed
+    Callback = function(value)
+        local player = game:GetService("Players").LocalPlayer
+        player.Character:WaitForChild("Humanoid")
+        player.Character.Humanoid.WalkSpeed = value
+    end
+})
+
+LocalPlayerTab:AddSlider({
+    Name = "JumpPower",
+    Min = 0,
+    Max = 1000,
+    DefaultValue = 50, -- Default jump power
+    Callback = function(value)
+        local player = game:GetService("Players").LocalPlayer
+        player.Character:WaitForChild("Humanoid")
+        player.Character.Humanoid.JumpPower = value
+    end
+})
+
+-- Create a tab named Other Scripts in Orion without an icon
+local OtherScriptsTab = Window:MakeTab({
+    Name = "Other Scripts",
+    PremiumOnly = false -- No Icon specified
+})
+
+-- Add the "Infinite Yield" button to the Other Scripts tab
+OtherScriptsTab:AddButton({
+    Name = "Infinite Yield",
+    Callback = function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'), true))()
+    end,
+    Description = "Load Infinite Yield admin script"
+})
+
+-- Add the "BeboScripts" button to the Other Scripts tab
+OtherScriptsTab:AddButton({
+    Name = "BeboScripts",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Bebo-Mods/BeboScripts/main/StandAwekening.lua"))()
+    end,
+    Description = "Load BeboScripts for Stand Awakening"
+})
+
+-- Initialize the UI
+OrionLib:Init()
